@@ -11,16 +11,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { LoaderCircle } from "lucide-react";
+import { MockInterview } from "@/utils/schema";
+import { db } from "@/utils/db";
+import { v4 as uuidv4 } from "uuid";
+import { useUser } from "@clerk/nextjs";
+import moment from "moment";
 
 function AddNewInterview() {
   const [openDialog, setOpenDialog] = useState(false);
   const [jobPosition, setJobPosition] = useState("");
   const [jobDesc, setJobDesc] = useState("");
   const [jobExperience, setJobExperience] = useState("");
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [jsonResponse, setJsonResponse] = useState([]);
+  const { user } = useUser();
 
   const onSubmit = async (e) => {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
     console.log("Sending Prompt:", jobPosition, jobDesc, jobExperience);
 
@@ -36,28 +43,44 @@ function AddNewInterview() {
       });
 
       const data = await response.json();
-      // console.log("Full Response:", data); it is the full response
-
       const raw = data.response;
+
       if (!raw) {
         console.error("AI response is undefined or empty:", data);
         return;
       }
 
-      // Clean the string and parse the JSON
       let cleaned = raw
-        .replace(/```json|```/g, "")     // remove triple backticks and 'json'
-        .replace(/^AI Response:\s*/i, "") // remove "AI Response:"
+        .replace(/```json|```/g, "")
+        .replace(/^AI Response:\s*/i, "")
         .trim();
 
       const parsed = JSON.parse(cleaned);
       const interviewQuestions = parsed.interviewQuestions;
+      console.log("Parsed Questions:", interviewQuestions);
 
-      console.log(interviewQuestions); //json format questions
+      setJsonResponse(cleaned); // moved inside try to avoid undefined error
+
+      const resp = await db.insert(MockInterview).values({
+        mockId: uuidv4(),
+        jsonMockResp: cleaned,
+        jobPosition: jobPosition,
+        jobDesc: jobDesc,
+        jobExperience: jobExperience,
+        createdBy: user?.primaryEmailAddress?.emailAddress,
+        createdAt: moment().format("DD-MM-yyyy"),
+      }).returning({ mockId: MockInterview.mockId });
+
+      console.log("Inserted ID : ", resp);
+
+      if(resp){
+        setOpenDialog(false);
+      }
     } catch (error) {
-      console.error("Error fetching AI response:", error);
+      console.error("Error fetching or parsing AI response:", error);
     }
-    setLoading(false )
+
+    setLoading(false);
   };
 
   return (
@@ -122,11 +145,16 @@ function AddNewInterview() {
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" disabled = {loading}>
-                    {loading?
-                    <>
-                    <LoaderCircle className="animate-spin"/> 'Generating from AI'
-                    </>: 'Start Interview'}</Button>
+                  <Button type="submit" disabled={loading}>
+                    {loading ? (
+                      <>
+                        <LoaderCircle className="animate-spin" /> Generating from
+                        AI
+                      </>
+                    ) : (
+                      "Start Interview"
+                    )}
+                  </Button>
                 </div>
               </form>
             </DialogDescription>
