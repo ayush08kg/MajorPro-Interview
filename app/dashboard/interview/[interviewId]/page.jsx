@@ -33,8 +33,8 @@ function Interview({ params }) {
               onUserMediaError={() => setWebCamEnabled(false)}
               mirrored={true}
               style={{
-                height: 300,
-                width: 300,
+                height: 500,
+                width: 500,
               }}
             />
           ) : (
