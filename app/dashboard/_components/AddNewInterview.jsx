@@ -16,6 +16,7 @@ import { db } from "@/utils/db";
 import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/nextjs";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 
 function AddNewInterview() {
   const [openDialog, setOpenDialog] = useState(false);
@@ -24,6 +25,7 @@ function AddNewInterview() {
   const [jobExperience, setJobExperience] = useState("");
   const [loading, setLoading] = useState(false);
   const [jsonResponse, setJsonResponse] = useState([]);
+  const router = useRouter();
   const { user } = useUser();
 
   const onSubmit = async (e) => {
@@ -75,6 +77,7 @@ function AddNewInterview() {
 
       if(resp){
         setOpenDialog(false);
+        router.push('/dashboard/interview/'+ resp[0]?.mockId)
       }
     } catch (error) {
       console.error("Error fetching or parsing AI response:", error);
