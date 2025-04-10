@@ -62,7 +62,7 @@ function RecordAnswerSection({
       ", User Answer:" +
       userAnswer +
       ",depending on question and user answer for given interview question" +
-      "please give us rating for answer and feedback as area of improvement if any." +
+      "please give us rating out of 10 for answer and feedback as area of improvement if any." +
       "I just need one feedback inside my json containing 3-4 lines" +
       " in JSON format with rating field and feedback field ";
 
