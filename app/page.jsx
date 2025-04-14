@@ -30,13 +30,13 @@ export default function Home() {
           <li>✅ Build confidence for your big day</li>
         </ul>
 
-        <Button onClick={handleStart} className="mt-10 px-8 py-4 text-lg bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md transition cursor-pointer">
+        <Button onClick={handleStart} className="mt-10 px-6 py-6 text-lg bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md transition cursor-pointer">
           Start Your Prep
         </Button>
       </main>
 
       <footer className="w-full text-center text-sm text-gray-500 py-4 border-t border-gray-200 bg-white/70 backdrop-blur-sm">
-        © {new Date().getFullYear()} Interview Prep powered by AI — Built for future achievers.
+        © {new Date().getFullYear()} Interview Prep powered by AI — Built for future achievers -- CareerCrafts
       </footer>
     </div>
   );
