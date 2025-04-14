@@ -5,23 +5,27 @@ import { MockInterview } from "@/utils/schema";
 import { eq } from "drizzle-orm";
 import { Lightbulb, WebcamIcon } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, use } from "react";
 import Webcam from "react-webcam";
 
 function Interview({ params }) {
+  const unwrappedParams = use(params);
   const [interviewData, setInterviewData] = useState();
   const [webCamEnabled, setWebCamEnabled] = useState(false);
+
   useEffect(() => {
-    console.log(params.interviewId);
+    console.log(unwrappedParams.interviewId);
     GetInterviewDetails();
   }, []);
+
   const GetInterviewDetails = async () => {
     const result = await db
       .select()
       .from(MockInterview)
-      .where(eq(MockInterview.mockId, params.interviewId));
+      .where(eq(MockInterview.mockId, unwrappedParams.interviewId));
     setInterviewData(result[0]);
   };
+
   return (
     <div className="my-10 flex justify-center flex-col items-center">
       <h2 className="font-bold text-2xl">Let's Get Started</h2>
@@ -39,21 +43,12 @@ function Interview({ params }) {
               }}
             />
           ) : (
-            // <div className="h-[300px] w-[300px] bg-secondary rounded-lg border flex flex-col items-center justify-center gap-5">
-            //   <WebcamIcon className="h-20 w-20 text-gray-500" />
-            //   <Button
-            //     className="bg-gray-300 text-black hover:bg-gray-100 hover:text-black hover:cursor-pointer"
-            //     onClick={() => setWebCamEnabled(true)}
-            //   >
-            //     Enable Web Cam and Microphone
-            //   </Button>
-            // </div>
             <>
-            <WebcamIcon className="h-72 w-full my-7 p-20 bg-secondary rounded-lg border" />
-            <Button className="w-full rounded-2xl " onClick={() => setWebCamEnabled(true)}>
-              Enable Web Cam and Microphone
-            </Button>
-          </>
+              <WebcamIcon className="h-72 w-full my-7 p-20 bg-secondary rounded-lg border" />
+              <Button className="w-full rounded-2xl" onClick={() => setWebCamEnabled(true)}>
+                Enable Web Cam and Microphone
+              </Button>
+            </>
           )}
         </div>
 
@@ -88,10 +83,11 @@ function Interview({ params }) {
               {process.env.NEXT_PUBLIC_INFORMATION}
             </h2>
           </div>
-          <Link href={'/dashboard/interview/'+params.interviewId+'/start'}>
-          <Button className="bg-blue-700 text-white border border-transparent hover:bg-white hover:text-blue-700 hover:border-blue-800 hover:cursor-pointer rounded-2xl">
-            Start Interview
-          </Button>
+
+          <Link href={`/dashboard/interview/${unwrappedParams.interviewId}/start`}>
+            <Button className="bg-blue-700 text-white border border-transparent hover:bg-white hover:text-blue-700 hover:border-blue-800 hover:cursor-pointer rounded-2xl">
+              Start Interview
+            </Button>
           </Link>
         </div>
       </div>

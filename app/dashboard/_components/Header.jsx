@@ -7,35 +7,43 @@ import React, { useEffect } from 'react'
 
 function Header() {
     const path = usePathname();
-    
+
     useEffect(() => {
-        console.log(path)
-    }, [path]) // Also updated dependency array
+        if (path) {
+            console.log(path);
+        }
+    }, [path]);
 
     return (
         <div className='flex p-4 items-center justify-between bg-secondary shadow-sm'>
-            <Image src={'/logo.svg'} width={160} height={100} alt='logo' />
-            
+            <Image
+                src='/Logo.png'
+                width={30}
+                height={30}
+                alt='logo'
+                priority // <-- ensures it's rendered immediately on both server & client
+                style={{ color: 'transparent' }} // optional styling to match server/client render
+            />
+
             <ul className='hidden md:flex gap-6'>
-                {/* Wrap in Link */}
                 <Link href="/dashboard">
                     <li className={`hover:text-blue-700 hover:font-bold transition-all cursor-pointer 
-                        ${path == '/dashboard' && 'text-blue-700 font-bold'}`}>
+                        ${path === '/dashboard' ? 'text-blue-700 font-bold' : ''}`}>
                         Dashboard
                     </li>
                 </Link>
 
-                <Link href="/dashboard/questions">
+                <Link href="/dashboard/resources">
                     <li className={`hover:text-blue-700 hover:font-bold transition-all cursor-pointer 
-                        ${path == '/dashboard/questions' && 'text-blue-700 font-bold'}`}>
-                        Questions
+                        ${path === '/dashboard/resources' ? 'text-blue-700 font-bold' : ''}`}>
+                        Resources
                     </li>
                 </Link>
 
-                <Link href="/dashboard/how">
+                <Link href="/dashboard/tips">
                     <li className={`hover:text-blue-700 hover:font-bold transition-all cursor-pointer 
-                        ${path == '/dashboard/how' && 'text-blue-700 font-bold'}`}>
-                        How it Works?
+                        ${path === '/dashboard/tips' ? 'text-blue-700 font-bold' : ''}`}>
+                        Tips & Tricks
                     </li>
                 </Link>
             </ul>
