@@ -26,17 +26,19 @@ function Header() {
             />
 
             <ul className='hidden md:flex gap-6'>
-                <Link href="/dashboard">
-                    <li className={`hover:text-blue-700 hover:font-bold transition-all cursor-pointer 
-                        ${path === '/dashboard' ? 'text-blue-700 font-bold' : ''}`}>
-                        Dashboard
-                    </li>
-                </Link>
+                
 
                 <Link href="/dashboard/resources">
                     <li className={`hover:text-blue-700 hover:font-bold transition-all cursor-pointer 
                         ${path === '/dashboard/resources' ? 'text-blue-700 font-bold' : ''}`}>
                         Resources
+                    </li>
+                </Link>
+
+                <Link href="/dashboard">
+                    <li className={`hover:text-blue-700 hover:font-bold transition-all cursor-pointer 
+                        ${path === '/dashboard' ? 'text-blue-700 font-bold' : ''}`}>
+                        Dashboard
                     </li>
                 </Link>
 
