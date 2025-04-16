@@ -16,6 +16,7 @@ function Header() {
 
     return (
         <div className='flex p-4 items-center justify-between bg-secondary shadow-sm'>
+            <Link href="/">
             <Image
                 src='/Logo.png'
                 width={30}
@@ -24,6 +25,7 @@ function Header() {
                 priority // <-- ensures it's rendered immediately on both server & client
                 style={{ color: 'transparent' }} // optional styling to match server/client render
             />
+            </Link>
 
             <ul className='hidden md:flex gap-6'>
                 
