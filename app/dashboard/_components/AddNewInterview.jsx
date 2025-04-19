@@ -25,6 +25,7 @@ function AddNewInterview() {
   const [jobExperience, setJobExperience] = useState("");
   const [loading, setLoading] = useState(false);
   const [jsonResponse, setJsonResponse] = useState([]);
+  const [questionno,setQuestionno] = useState(5);
   const router = useRouter();
   const { user } = useUser();
 
@@ -32,7 +33,7 @@ function AddNewInterview() {
     setLoading(true);
     e.preventDefault();
 
-    const InputPrompt = `Job Position: ${jobPosition}, Job Description: ${jobDesc}, Years of Experience: ${jobExperience}. Depending on this information, please provide me 5 interview questions with answers in JSON format. Give 'questions' and 'answers' as fields in the JSON.`;
+    const InputPrompt = `Job Position: ${jobPosition}, Job Description: ${jobDesc}, Years of Experience: ${jobExperience}. Depending on this information, please provide me ${questionno} interview questions with answers in JSON format. Give 'questions' and 'answers' as fields in the JSON.`;
 
     try {
       const response = await fetch("/api/geminiModal", {
@@ -128,6 +129,16 @@ function AddNewInterview() {
                   max="100"
                   required
                   onChange={(event) => setJobExperience(event.target.value)}
+                />
+              </div>
+              <div className="my-3">
+                <label>No. Of Questions</label>
+                <Input
+                  placeholder="Enter number of questions (min: 3, default: 5)"
+                  type="number"
+                  max="100"
+                  required
+                  onChange={(event) => setQuestionno(event.target.value)}
                 />
               </div>
             </div>

@@ -27,11 +27,12 @@ function RecordAnswerSection({
     results,
     startSpeechToText,
     stopSpeechToText,
-    setResults
+    setResults,
   } = useSpeechToText({
     continuous: true,
     useLegacyResults: false,
   });
+
   useEffect(() => {
     results.map((result) =>
       setUserAnswer((prevAns) => prevAns + result?.transcript)
@@ -53,7 +54,6 @@ function RecordAnswerSection({
   };
 
   const UpdateUserAnswer = async () => {
-    console.log(userAnswer);
     setLoading(true);
 
     const feedbackPrompt =
@@ -66,7 +66,7 @@ function RecordAnswerSection({
       "I just need one feedback inside my json containing 3-4 lines" +
       " in JSON format with rating field and feedback field ";
 
-    let mockJsonResp = ""; // ✅ Declare here so it's always accessible
+    let mockJsonResp = "";
 
     try {
       const res = await fetch("/api/geminiModal", {
@@ -114,7 +114,7 @@ function RecordAnswerSection({
         createdAt: moment().format("DD-MM-yyyy"),
       });
 
-      if (resp){
+      if (resp) {
         toast.success("Answer recorded successfully ✅");
         setResults([]);
       }
@@ -128,51 +128,42 @@ function RecordAnswerSection({
   };
 
   return (
-    <div className="flex items-center justify-center flex-col">
-      <div className="flex mt-20 flex-col justify-center bg-black items-center rounded-lg p-5">
+    <div className="flex items-center justify-center flex-col px-4">
+      <div className="flex mt-16 flex-col justify-center items-center bg-gray-900 rounded-2xl p-5 relative shadow-lg w-full max-w-md">
         <Image
           src="/webcam.png"
           alt="Webcam Icon"
           width={200}
           height={200}
-          className="absolute"
+          className="absolute opacity-20"
         />
         <Webcam
           mirrored={true}
           style={{
             height: 300,
             width: "100%",
-            zindex: 10,
+            borderRadius: "1rem",
+            zIndex: 10,
+            objectFit: "cover",
           }}
         />
       </div>
+
       <Button
         disabled={loading}
         variant="outline"
-        className="my-10 hover:cursor-pointer"
+        className={`my-8 px-6 py-3 rounded-full text-base font-medium transition-all duration-300 ${
+          isRecording
+            ? "bg-red-100 text-red-700 border-red-300 hover:bg-red-200"
+            : "bg-blue-100 text-blue-700 border-blue-300 hover:bg-blue-200"
+        }`}
         onClick={StartStopRecording}
       >
-        {isRecording ? (
-          <h2 className="text-red-600 flex gap-2">
-            <Mic /> Stop Recording
-          </h2>
-        ) : (
-          <h2 className="text-blue-600 flex gap-2">
-            <Mic /> Record Answer
-          </h2>
-        )}
+        <span className="flex items-center gap-2">
+          <Mic className="w-5 h-5" />
+          {isRecording ? "Stop Recording" : "Record Answer"}
+        </span>
       </Button>
-
-      {/* <h1>Recording: {isRecording.toString()}</h1>
-      <button onClick={isRecording ? stopSpeechToText : startSpeechToText}>
-        {isRecording ? 'Stop Recording' : 'Start Recording'}
-      </button>
-      <ul>
-        {results.map((result) => (
-          <li key={result.timestamp}>{result.transcript}</li>
-        ))}
-        {interimResult && <li>{interimResult}</li>}
-      </ul> */}
     </div>
   );
 }

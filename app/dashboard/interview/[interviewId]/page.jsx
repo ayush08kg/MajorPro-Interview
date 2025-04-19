@@ -14,7 +14,6 @@ function Interview({ params }) {
   const [webCamEnabled, setWebCamEnabled] = useState(false);
 
   useEffect(() => {
-    console.log(unwrappedParams.interviewId);
     GetInterviewDetails();
   }, []);
 
@@ -27,65 +26,73 @@ function Interview({ params }) {
   };
 
   return (
-    <div className="my-10 flex justify-center flex-col items-center">
-      <h2 className="font-bold text-2xl">Let's Get Started</h2>
+    <div className="min-h-screen mt-5 mb-5 py-12 px-6 md:px-16 bg-gradient-to-br from-gray-200 via-blue-100 to-white rounded-4xl">
+      <h2 className="text-4xl font-bold text-center text-blue-700 mb-10">
+        Ready for Your Interview?
+        <br />
+        Just a Small Environment Checkup.
+      </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-6xl mx-auto items-start">
+        <div className="flex flex-col items-center justify-center bg-white rounded-3xl p-6 shadow-lg border">
           {webCamEnabled ? (
+            <>
             <Webcam
               onUserMedia={() => setWebCamEnabled(true)}
               onUserMediaError={() => setWebCamEnabled(false)}
               mirrored={true}
-              style={{
-                height: 500,
-                width: 500,
-              }}
+              className="rounded-2xl shadow-md"
+              style={{ width: "100%", height: "auto", maxWidth: "500px" }}
             />
+            <h2 className="font-bold mt-2 text-green-600">Everything looks fine..You are Good to Go 🏁</h2>
+            </>
           ) : (
             <>
-              <WebcamIcon className="h-72 w-full my-7 p-20 bg-secondary rounded-lg border" />
-              <Button className="w-full rounded-2xl" onClick={() => setWebCamEnabled(true)}>
-                Enable Web Cam and Microphone
+              <div className="w-full flex justify-center items-center h-64 bg-blue-100 rounded-xl mb-6">
+                <WebcamIcon className="h-20 w-20" />
+              </div>
+              <Button
+                className="w-full bg-blue-700 text-white rounded-xl hover:bg-blue-800 transition"
+                onClick={() => setWebCamEnabled(true)}
+              >
+                Enable Webcam & Microphone
               </Button>
             </>
           )}
         </div>
 
-        <div className="flex flex-col my-5 gap-5">
-          <div className="flex flex-col p-5 rounded-lg border gap-5">
+        <div className="flex flex-col gap-6">
+          <div className="p-6 rounded-2xl shadow-md border bg-white space-y-4">
             {interviewData ? (
               <>
-                <h2 className="text-lg">
-                  <strong>Job Role/Job Position : </strong>
-                  {interviewData.jobPosition}
+                <h2 className="text-lg text-gray-700">
+                  <span className="font-bold text-green-600">Job Role:</span> {interviewData.jobPosition}
                 </h2>
-                <h2 className="text-lg">
-                  <strong>Job Description/Tech Stack : </strong>
-                  {interviewData.jobDesc}
+                <h2 className="text-lg text-gray-700">
+                  <span className="font-bold text-green-600">Description:</span> {interviewData.jobDesc}
                 </h2>
-                <h2 className="text-lg">
-                  <strong>Years of Experience : </strong>
-                  {interviewData.jobExperience}
+                <h2 className="text-lg text-gray-700">
+                  <span className="font-bold text-green-600">Experience:</span> {interviewData.jobExperience}
                 </h2>
+              
               </>
             ) : (
-              <p>Loading interview details...</p>
+              <p className="text-gray-500">Loading interview details...</p>
             )}
           </div>
 
-          <div className="p-5 border rounded-lg border-yellow-300 bg-yellow-100">
-            <h2 className="flex gap-2 items-center text-yellow-600">
-              <Lightbulb />
-              <strong>Information</strong>
-            </h2>
-            <h2 className="mt-2 text-yellow-700">
+          <div className="p-5 rounded-2xl border-l-4 border-yellow-400 bg-yellow-50 shadow-sm">
+            <div className="flex gap-2 items-center text-yellow-700 font-medium">
+              <Lightbulb className="w-5 h-5" />
+              <span>Pro Tip</span>
+            </div>
+            <p className="text-yellow-700 mt-2 text-sm">
               {process.env.NEXT_PUBLIC_INFORMATION}
-            </h2>
+            </p>
           </div>
 
           <Link href={`/dashboard/interview/${unwrappedParams.interviewId}/start`}>
-            <Button className="bg-blue-700 text-white border border-transparent hover:bg-white hover:text-blue-700 hover:border-blue-800 hover:cursor-pointer rounded-2xl">
+            <Button className="w-full py-7 text-lg font-semibold bg-gradient-to-r from-blue-700 to-indigo-600 text-white rounded-xl hover:from-indigo-700 hover:to-blue-800 transition-all shadow-lg">
               Start Interview
             </Button>
           </Link>
