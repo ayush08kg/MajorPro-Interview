@@ -3,7 +3,8 @@ import React from "react";
 
 function QuestionSection({ mockInterviewQuestion, activeQuestionIndex }) {
   return (
-    mockInterviewQuestion && (
+    mockInterviewQuestion ? (
+      <>
       <div className="p-5 border border-gray-200 shadow-md rounded-2xl my-10 bg-white">
         {/* Question Navigation */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -51,7 +52,15 @@ function QuestionSection({ mockInterviewQuestion, activeQuestionIndex }) {
           </p>
         </div>
       </div>
-    )
+      </>
+    ) : <div className="flex justify-center items-center min-h-screen ">
+    <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-md w-full text-center border border-red-300 animate-fade-in">
+      <div className="text-red-600 text-6xl mb-4">🚨</div>
+      <h2 className="text-3xl font-bold text-red-700 mb-2">Something Went Wrong</h2>
+      <p className="text-gray-600 mb-6">The API is not responding at the moment. Please try again later.</p>
+      
+    </div>
+  </div>
   );
 }
 

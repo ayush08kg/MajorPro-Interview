@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-function InterviewItemCard({ interview }) {
+function InterviewItemCard({ interview , onDelete }) {
   const router = useRouter();
 
   const onStart = () => {
@@ -12,6 +12,8 @@ function InterviewItemCard({ interview }) {
   const onFeedback = () => {
     router.push('/dashboard/interview/' + interview?.mockId + "/feedback");
   };
+  
+  
 
   return (
     <div className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl rounded-xl p-4 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-white/40 cursor-pointer">
@@ -21,6 +23,11 @@ function InterviewItemCard({ interview }) {
       <div className="flex justify-between mt-3">
         <Button size="sm" variant="outline" onClick={onFeedback}>Feedback</Button>
         <Button size="sm" onClick={onStart}>Start</Button>
+        <Button
+          size="sm"
+          className="bg-red-700 text-white hover:bg-red-900 "
+          onClick={() => onDelete(interview.mockId)}
+        >Delete</Button>
       </div>
     </div>
   );

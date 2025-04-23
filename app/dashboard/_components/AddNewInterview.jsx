@@ -17,9 +17,11 @@ import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/nextjs";
 import moment from "moment";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function AddNewInterview() {
   const [openDialog, setOpenDialog] = useState(false);
+  const [error, setError] = useState(false);
   const [jobPosition, setJobPosition] = useState("");
   const [jobDesc, setJobDesc] = useState("");
   const [jobExperience, setJobExperience] = useState("");
@@ -28,6 +30,20 @@ function AddNewInterview() {
   const [questionno,setQuestionno] = useState(5);
   const router = useRouter();
   const { user } = useUser();
+
+  const handlechange = (e) =>{
+    const change = parseInt(e.target.value,10);
+    console.log(change);
+    if(isNaN(change) || change>5 || change<2){
+      setError(true);
+      toast.error("Invalid No. of Questions")
+      return ;
+    }
+    else{
+      setQuestionno(change);
+      setError(false)
+    }
+  }
 
   const onSubmit = async (e) => {
     setLoading(true);
@@ -134,11 +150,11 @@ function AddNewInterview() {
               <div className="my-3">
                 <label>No. Of Questions</label>
                 <Input
-                  placeholder="Enter number of questions (min: 3, default: 5)"
+                  placeholder="Enter number of questions (min: 3, max: 5)"
                   type="number"
                   max="100"
                   required
-                  onChange={(event) => setQuestionno(event.target.value)}
+                  onChange={handlechange}
                 />
               </div>
             </div>
@@ -151,7 +167,7 @@ function AddNewInterview() {
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={loading}>
+              <Button type="submit" disabled={loading || error}>
                 {loading ? (
                   <>
                     <LoaderCircle className="animate-spin" /> Generating from AI

@@ -41,10 +41,13 @@ function Interview({ params }) {
               onUserMedia={() => setWebCamEnabled(true)}
               onUserMediaError={() => setWebCamEnabled(false)}
               mirrored={true}
+              audio={true}
+              muted = {true}
               className="rounded-2xl shadow-md"
               style={{ width: "100%", height: "auto", maxWidth: "500px" }}
             />
-            <h2 className="font-bold mt-2 text-green-600">Everything looks fine..You are Good to Go 🏁</h2>
+            <h2 className="font-bold mt-2 text-green-600">Everything looks fine..You are Good to Go 🏁 <br />To be on 
+            a safer side check if your Mic is enabled or not!!!</h2>
             </>
           ) : (
             <>
