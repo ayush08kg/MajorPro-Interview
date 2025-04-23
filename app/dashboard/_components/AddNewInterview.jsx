@@ -150,7 +150,7 @@ function AddNewInterview() {
               <div className="my-3">
                 <label>No. Of Questions</label>
                 <Input
-                  placeholder="Enter number of questions (min: 3, max: 5)"
+                  placeholder="Enter number of questions (min: 2, max: 5)"
                   type="number"
                   max="100"
                   required
