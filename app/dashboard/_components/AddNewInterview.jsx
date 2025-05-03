@@ -120,8 +120,8 @@ function AddNewInterview() {
           </DialogHeader>
 
           <form onSubmit={onSubmit}>
-            <div className="mt-4">
-              <div className="mt-7 my-3">
+            <div className="">
+              <div className="">
                 <label>Job Role/Job Position</label>
                 <Input
                   placeholder="Ex. Full Stack Developer"

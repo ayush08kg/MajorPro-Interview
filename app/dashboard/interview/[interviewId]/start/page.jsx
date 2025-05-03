@@ -10,14 +10,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-// ⛳ Dynamically import RecordAnswerSection for client-side only
 const RecordAnswerSection = dynamic(() => import("./_components/RecordAnswerSection"), {
   ssr: false,
 });
 
 function StartInterview() {
   const { interviewId } = useParams();
-
   const [interviewData, setInterviewData] = useState(null);
   const [mockInterviewQuestion, setMockInterviewQuestion] = useState([]);
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
@@ -45,35 +43,45 @@ function StartInterview() {
   };
 
   return (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <QuestionSection
-          mockInterviewQuestion={mockInterviewQuestion}
-          activeQuestionIndex={activeQuestionIndex}
-        />
-        <RecordAnswerSection
-          mockInterviewQuestion={mockInterviewQuestion}
-          activeQuestionIndex={activeQuestionIndex}
-          interviewData={interviewData}
-        />
-      </div>
+    <div className="min-h-screen py-8 px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <QuestionSection
+            mockInterviewQuestion={mockInterviewQuestion}
+            activeQuestionIndex={activeQuestionIndex}
+          />
+          <RecordAnswerSection
+            mockInterviewQuestion={mockInterviewQuestion}
+            activeQuestionIndex={activeQuestionIndex}
+            interviewData={interviewData}
+          />
+        </div>
 
-      <div className="flex justify-end gap-10 mt-10">
-        {activeQuestionIndex > 0 && (
-          <Button onClick={() => setActiveQuestionIndex(activeQuestionIndex - 1)}>
-            Previous Question
-          </Button>
-        )}
-        {activeQuestionIndex !== mockInterviewQuestion?.length - 1 && (
-          <Button onClick={() => setActiveQuestionIndex(activeQuestionIndex + 1)}>
-            Next Question
-          </Button>
-        )}
-        {activeQuestionIndex === mockInterviewQuestion?.length - 1 && (
-          <Link href={`/dashboard/interview/${interviewData?.mockId}/feedback`}>
-            <Button>End Interview</Button>
-          </Link>
-        )}
+        <div className="flex justify-end gap-4 mt-8">
+          {activeQuestionIndex > 0 && (
+            <Button 
+              variant="outline"
+              className="px-6 py-3 border-gray-300 hover:bg-gray-100"
+              onClick={() => setActiveQuestionIndex(activeQuestionIndex - 1)}
+            >
+              ← Previous
+            </Button>
+          )}
+          {activeQuestionIndex !== mockInterviewQuestion?.length - 1 ? (
+            <Button 
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700"
+              onClick={() => setActiveQuestionIndex(activeQuestionIndex + 1)}
+            >
+              Next →
+            </Button>
+          ) : (
+            <Link href={`/dashboard/interview/${interviewData?.mockId}/feedback`}>
+              <Button className="px-6 py-3 bg-green-600 hover:bg-green-700">
+                Finish Interview
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

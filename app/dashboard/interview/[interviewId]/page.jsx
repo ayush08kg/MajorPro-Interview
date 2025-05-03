@@ -26,79 +26,127 @@ function Interview({ params }) {
   };
 
   return (
-    <div className="min-h-screen mt-5 mb-5 py-12 px-6 md:px-16 bg-gradient-to-br from-gray-200 via-blue-100 to-white rounded-4xl">
-      <h2 className="text-4xl font-bold text-center text-blue-700 mb-10">
-        Ready for Your Interview?
-        <br />
-        Just a Small Environment Checkup.
-      </h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-6xl mx-auto items-start">
-        <div className="flex flex-col items-center justify-center bg-white rounded-3xl p-6 shadow-lg border">
-          {webCamEnabled ? (
-            <>
-            <Webcam
-              onUserMedia={() => setWebCamEnabled(true)}
-              onUserMediaError={() => setWebCamEnabled(false)}
-              mirrored={true}
-              audio={true}
-              muted = {true}
-              className="rounded-2xl shadow-md"
-              style={{ width: "100%", height: "auto", maxWidth: "500px" }}
-            />
-            <h2 className="font-bold mt-2 text-green-600">Everything looks fine..You are Good to Go 🏁 <br />To be on 
-            a safer side check if your Mic is enabled or not!!!</h2>
-            </>
-          ) : (
-            <>
-              <div className="w-full flex justify-center items-center h-64 bg-blue-100 rounded-xl mb-6">
-                <WebcamIcon className="h-20 w-20" />
-              </div>
-              <Button
-                className="w-full bg-blue-700 text-white rounded-xl hover:bg-blue-800 transition"
-                onClick={() => setWebCamEnabled(true)}
-              >
-                Enable Webcam & Microphone
-              </Button>
-            </>
-          )}
+    <div className="min-h-screen py-12 px-4 sm:px-8 ">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+            Ready for Your Interview?
+          </h2>
+          <p className="text-lg text-gray-600">
+            Let's make sure everything is set up perfectly
+          </p>
         </div>
 
-        <div className="flex flex-col gap-6">
-          <div className="p-6 rounded-2xl shadow-md border bg-white space-y-4">
-            {interviewData ? (
-              <>
-                <h2 className="text-lg text-gray-700">
-                  <span className="font-bold text-green-600">Job Role:</span> {interviewData.jobPosition}
-                </h2>
-                <h2 className="text-lg text-gray-700">
-                  <span className="font-bold text-green-600">Description:</span> {interviewData.jobDesc}
-                </h2>
-                <h2 className="text-lg text-gray-700">
-                  <span className="font-bold text-green-600">Experience:</span> {interviewData.jobExperience}
-                </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Webcam Section */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="p-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                Environment Check
+              </h3>
               
-              </>
-            ) : (
-              <p className="text-gray-500">Loading interview details...</p>
-            )}
-          </div>
-
-          <div className="p-5 rounded-2xl border-l-4 border-yellow-400 bg-yellow-50 shadow-sm">
-            <div className="flex gap-2 items-center text-yellow-700 font-medium">
-              <Lightbulb className="w-5 h-5" />
-              <span>Pro Tip</span>
+              {webCamEnabled ? (
+                <div className="space-y-4">
+                  <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
+                    <Webcam
+                      onUserMedia={() => setWebCamEnabled(true)}
+                      onUserMediaError={() => setWebCamEnabled(false)}
+                      mirrored={true}
+                      audio={true}
+                      muted={true}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <p className="text-sm text-green-600 font-medium flex items-center">
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Everything looks good! Check your microphone is enabled.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="aspect-video flex items-center justify-center bg-gray-100 rounded-lg">
+                    <div className="text-center p-6">
+                      <WebcamIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-500 mb-4">
+                        Enable your camera and microphone to test your setup
+                      </p>
+                      <Button
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                        onClick={() => setWebCamEnabled(true)}
+                      >
+                        Enable Webcam & Microphone
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            <p className="text-yellow-700 mt-2 text-sm">
-              {process.env.NEXT_PUBLIC_INFORMATION}
-            </p>
           </div>
 
-          <Link href={`/dashboard/interview/${unwrappedParams.interviewId}/start`}>
-            <Button className="w-full py-7 text-lg font-semibold bg-gradient-to-r from-blue-700 to-indigo-600 text-white rounded-xl hover:from-indigo-700 hover:to-blue-800 transition-all shadow-lg">
-              Start Interview
-            </Button>
-          </Link>
+          {/* Interview Details Section */}
+          <div className="space-y-6">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                Interview Details
+              </h3>
+              
+              {interviewData ? (
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-500">Job Role</h4>
+                    <p className="text-lg font-semibold text-gray-900">{interviewData.jobPosition}</p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-500">Description</h4>
+                    <p className="text-gray-700">{interviewData.jobDesc}</p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-500">Experience Level</h4>
+                    <p className="text-gray-700">{interviewData.jobExperience}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-center py-8">
+                  <div className="animate-pulse flex space-x-4">
+                    <div className="flex-1 space-y-4 py-1">
+                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                      <div className="space-y-2">
+                        <div className="h-4 bg-gray-200 rounded"></div>
+                        <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Pro Tip Card */}
+            <div className="bg-blue-50 border-l-4 border-blue-400 rounded-lg p-5">
+              <div className="flex items-start">
+                <Lightbulb className="flex-shrink-0 h-5 w-5 text-blue-500 mt-0.5" />
+                <div className="ml-3">
+                  <h4 className="text-sm font-medium text-blue-800">Pro Tip</h4>
+                  <p className="text-sm text-blue-700 mt-1">
+                    {process.env.NEXT_PUBLIC_INFORMATION}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Start Button */}
+            <Link href={`/dashboard/interview/${unwrappedParams.interviewId}/start`}>
+              <Button className="w-full py-6 text-lg font-medium bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md transition-all">
+                Start Interview Now
+                <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
